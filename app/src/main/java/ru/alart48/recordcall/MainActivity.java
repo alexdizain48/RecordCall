@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver updateUIReciver;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         int record_audio_result = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
         int read_phone_state_result = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int read_contacts_result = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+
         return write_external_storage_result == PackageManager.PERMISSION_GRANTED &&
                 record_audio_result == PackageManager.PERMISSION_GRANTED &&
                 read_phone_state_result == PackageManager.PERMISSION_GRANTED &&
@@ -74,15 +74,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_PERMISSION_CODE: {
                 if (grantResults.length > 0) {
                     StringBuilder messageBuilder = new StringBuilder(" ");
+
                     boolean permissionToStore = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean permissionToRecord = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     boolean permissionToPhone = grantResults[2] == PackageManager.PERMISSION_GRANTED;
                     boolean permissionToReadContacts = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                             grantResults[1] == PackageManager.PERMISSION_GRANTED &&
                             grantResults[2] == PackageManager.PERMISSION_GRANTED &&
@@ -105,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
                             showPermissionDialog(this, messageBuilder);
                     }
 
+                } else {
+                    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 }
                 break;
             }
